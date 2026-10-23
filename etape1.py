@@ -5,7 +5,7 @@ import scipy as sp
 from math import cos
 
 L = 0.33        # longueur vibrante [m]
-N_ELEM = 109     # nombre d'éléments  # multiple de 11, mais on pense que -1
+N_ELEM = 329     # nombre d'éléments  # multiple de 11, mais on pense que -1
 MU = 3.1e-3     # masse linéique [kg/m]
 T = 51.9        # tension corde sol [N]
 #X_ARCH = 0.03   # abscisse archet [m]
@@ -22,7 +22,7 @@ K_red = K[1:-1, 1:-1]
 # plt.spy(M_red)
 # plt.show()
 
-F = np.array([0 for _ in range(N_ELEM+1)]) #check indices
+F = np.zeros(N_ELEM+1) #check indices
 F[1] = 1
 F_red = F[1:-1]
 
@@ -44,16 +44,16 @@ for i in range(1, N_ELEM) :
 ## Fréquences propres
 
 l, v_red = sp.linalg.eigh(K_red, M_red)
-omegas = [ np.sqrt(la) for la in l]
-frequences = [omega / (2*np.pi) for omega in omegas]
+omegas = np.sqrt(l)
+frequences = omegas / (2*np.pi)
 
 #v = [ [0 for _ in range(len(v_red[0]))] for _ in range(len(v_red)+2)]
 v = np.zeros((len(v_red)+2, len(v_red[0])))
 for i in range(1, len(v)-1) :
     v[i] = v_red[i-1]
-print(v)
+#print(v)
 
-colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink']
+colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink', 'cyan', 'yellow', 'magenta', 'black', 'grey']
 # x = list(mesh_1d(L, N_ELEM)[0])
 # for i in range(4) :
 #     phi = v[:, i]
@@ -66,15 +66,15 @@ colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink']
 
 ### Pré tension / fréquence
 
-tensions = np.linspace(10, 100, 100)
-tab_K = [ (t/T) * K for t in tensions]
-tab_Kred = [mat[1:-1, 1:-1] for mat in tab_K]
-tab_l = [sp.linalg.eigh(mat, M_red)[0] for mat in tab_Kred]
+# tensions = np.linspace(10, 100, 100)
+# tab_K = [ (t/T) * K for t in tensions]
+# tab_Kred = [mat[1:-1, 1:-1] for mat in tab_K]
+# tab_l = [sp.linalg.eigh(mat, M_red)[0] for mat in tab_Kred]
 
-for i in range(5) :
-    tab_freq_n = [np.sqrt(la[i]) / (2*np.pi) for la in tab_l]
-    plt.plot(tensions, tab_freq_n, color=colors[i])
-plt.xlabel("tension (N)")
-plt.ylabel("fréquence (Hz)")
-plt.title("Fréquence proportionnelle à la racine de la tension")
-plt.show()
+# for i in range(5) :
+#     tab_freq_n = [np.sqrt(la[i]) / (2*np.pi) for la in tab_l]
+#     plt.plot(tensions, tab_freq_n, color=colors[i])
+# plt.xlabel("tension (N)")
+# plt.ylabel("fréquence (Hz)")
+# plt.title("Fréquence proportionnelle à la racine de la tension")
+#plt.show()
