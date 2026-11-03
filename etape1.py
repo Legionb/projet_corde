@@ -5,10 +5,10 @@ import scipy as sp
 from math import cos
 
 L = 0.33        # longueur vibrante [m]
-N_ELEM = 329     # nombre d'éléments  # multiple de 11, mais on pense que -1
+N_ELEM = 329    # nombre d'éléments  # multiple de 11, mais on pense que -1
 MU = 3.1e-3     # masse linéique [kg/m]
 T = 51.9        # tension corde sol [N]
-#X_ARCH = 0.03   # abscisse archet [m]
+X_ARCH = 0.03   # abscisse archet [m]
 
 m = mat_masse_elem(MU, 0.03)
 M = assemblage(m, N_ELEM)
@@ -23,7 +23,7 @@ K_red = K[1:-1, 1:-1]
 # plt.show()
 
 F = np.zeros(N_ELEM+1) #check indices
-F[1] = 1
+F[round(X_ARCH*N_ELEM / L)] = 1
 F_red = F[1:-1]
 
 ## Résolution statique
