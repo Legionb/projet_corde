@@ -2,9 +2,6 @@ import numpy as np
 from string_fem_v2 import *
 import matplotlib.pyplot as plt
 import scipy as sp
-from pathlib import Path
-
-Path("figures").mkdir(exist_ok=True)
 
 L = 0.33        # longueur vibrante [m]
 N_ELEM = 330    # nombre d'éléments : multiple de 11 -> h = 1 mm, archet sur le noeud 30
@@ -43,7 +40,6 @@ U_mm = [u * 1e3 for u in U]
 U_exact_mm = [u * 1e3 for u in U_exact]
 plt.figure()
 plt.plot(x, U_mm, label="EF")
-plt.plot(x, U_exact_mm, "--", label="exacte")
 plt.xlabel("x (m)")
 plt.ylabel("U(x) (mm)")
 plt.title("Résolution statique : KU = F")
@@ -71,7 +67,7 @@ for i in range(4) :
     phi = v[:, i]
     plt.plot(x, phi, color=colors[i], label="mode " + str(i+1))
 plt.xlabel("x (m)")
-plt.ylabel("déformée modale")
+plt.ylabel("Déformée modale")
 plt.title("Fréquences propres : (K - w^2*M)phi = 0")
 plt.legend()
 plt.savefig("figures/fig8_modes.png")
@@ -87,10 +83,8 @@ plt.figure()
 for i in range(5) :
     tab_freq_n = [np.sqrt(la[i]) / (2*np.pi) for la in tab_l]
     plt.plot(tensions, tab_freq_n, color=colors[i])
-    plt.plot(tensions, (i+1) / (2*L) * np.sqrt(tensions/MU), "k--", linewidth=0.8)
-plt.xlabel("tension (N)")
-plt.ylabel("fréquence (Hz)")
+plt.xlabel("Tension (N)")
+plt.ylabel("Fréquence (Hz)")
 plt.title("Fréquence proportionnelle à la racine de la tension")
 plt.savefig("figures/fig9_tension.png")
-
 plt.show()
