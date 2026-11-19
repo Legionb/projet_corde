@@ -1,4 +1,4 @@
-from etape1 import *
+from etape1_v2 import *
 
 from scipy.integrate import solve_ivp
 from scipy.linalg import eigh
