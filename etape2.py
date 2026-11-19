@@ -4,7 +4,6 @@ from scipy.integrate import solve_ivp
 from scipy.linalg import eigh
 import numpy as np
 import matplotlib.pyplot as plt
-
 XI = 0.0001
 n_free = len(U_red)
 
@@ -38,14 +37,16 @@ y0 = np.concatenate([U_red, v0])
 # plt.show()
 
 ## Résolution homogène base modale, avec et sans amortissement
-
+N_MODES=20
 T1 = 0.005 # première période modale
 w2, phi = eigh(K_red, M_red)
+w2=w2[:N_MODES]
+phi=phi[:,:N_MODES]
 omegas = np.sqrt(w2)
 freq = omegas / (2*np.pi)
 
 def rhs_mod(t, y) :
-    q, q_point = y[:n_free], y[n_free:]
+    q, q_point = y[:N_MODES], y[N_MODES:]
     return np.concatenate([q_point, - np.array([w2[i] * q[i] for i in range(len(w2))])]) #-2* xi * omegas * q_point - w2 * q
 
 # def rhs_mod_amo(t, y) :
@@ -64,9 +65,9 @@ sol_mod = solve_ivp(rhs_mod, (0, 0.01), y0_mod, method='RK45', rtol=1e-6, atol=1
 # for k in (1, 3) :
 #     plt.plot(np.linspace(0, 0.33, N_ELEM-1), phi @ (sol_mod.y[:n_free, k*T1]*1e-3), color=colors[k // 1])
 
-plt.plot(np.linspace(0, 0.33, N_ELEM-1), phi @ (sol_mod.y[:n_free, 1]*1e-3), color=colors[1])
-plt.plot(np.linspace(0, 0.33, N_ELEM-1), phi @ (sol_mod.y[:n_free, 10]*1e-3), color=colors[2])
-plt.plot(np.linspace(0, 0.33, N_ELEM-1), phi @ (sol_mod.y[:n_free, 100]*1e-3), color=colors[3])
+plt.plot(np.linspace(0, 0.33, N_ELEM-1), phi @ (sol_mod.y[:N_MODES, 1]*1e-3), color=colors[1])
+plt.plot(np.linspace(0, 0.33, N_ELEM-1), phi @ (sol_mod.y[:N_MODES, 10]*1e-3), color=colors[2])
+plt.plot(np.linspace(0, 0.33, N_ELEM-1), phi @ (sol_mod.y[:N_MODES, 100]*1e-3), color=colors[3])
 
 
 
@@ -74,3 +75,9 @@ plt.ylabel("U(x) (mm)")
 plt.xlabel("x (m)")
 plt.title("Résolution homogène base modale")
 plt.show()
+
+
+# plt.plot(np.linspace(0,1,328), (phi@ (sol_mod.y[:n_free, 1]*1e-3)), color=colors[1])
+# plt.ylabel("U1(t) (mm)")
+# plt.xlabel("t (s)")
+# plt.show()
