@@ -68,8 +68,8 @@ if __name__ == "__main__" :
         phi = v[:, i]
         plt.plot(x, phi, color=colors[i], label="mode " + str(i+1))
     plt.xlabel("x (m)")
-    plt.ylabel("Déformée modale")
-    plt.title("Fréquences propres : (K - w^2*M)phi = 0")
+    plt.ylabel("Déformée modale (mm)")
+    plt.title("Premières déformées modales : (K - w^2*M)phi = 0")
     plt.legend()
     plt.savefig("figures/fig2_modes.png")
 

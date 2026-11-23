@@ -61,7 +61,6 @@ def integration_temporelle():
         return np.concatenate([v, -A @ u])
 
     y0 = np.concatenate([U0_red, V0_red])
-
     temps = np.linspace(0, 0.02, int(0.02 * fs) + 1)
 
     sol = solve_ivp(
@@ -236,7 +235,7 @@ def figure_modes_avec_amortissement(U_mod_amorti, temps):
     plt.ylabel("Déplacement (mm)")
     plt.title("Corde avec amortissement")
     plt.legend()
-    plt.savefig("fig6_modes_avec_amortissement.png")
+    plt.savefig("figures/fig6_modes_avec_amortissement.png")
     plt.close()
 
 
@@ -277,11 +276,7 @@ def figure_force_chevalet(U_mod, U_mod_amortie, temps):
 # FIGURE 8 : Déplacement au point de pincement
 # --------------------------------------------------
 
-def figure_deplacement_pincement(
-    U_mod,
-    U_mod_amortie,
-    temps
-):
+def figure_deplacement_pincement(U_mod, U_mod_amortie, temps):
 
     U_pincement = U_mod[i_pluck - 1, :]
     U_pincement_amortie = U_mod_amortie[i_pluck - 1, :]
@@ -314,27 +309,17 @@ def figure_deplacement_pincement(
 
 if __name__ == "__main__":
 
-    integration_temporelle()
+    #integration_temporelle()
 
     U_mod, temps, phi, w2, B = res_modale()
-
-    figure_modes_sans_amortissement(U_mod, temps)
+    #figure_modes_sans_amortissement(U_mod, temps)
 
     U_mod_amortie = res_modale_amortie(phi, w2, B, temps)
+    #figure_modes_avec_amortissement(U_mod_amortie, temps)
 
-    figure_modes_avec_amortissement(U_mod_amortie, temps)
+    F_chev_amortie = figure_force_chevalet(U_mod, U_mod_amortie, temps)
 
-    F_chev_amortie = figure_force_chevalet(
-        U_mod,
-        U_mod_amortie,
-        temps
-    )
-
-    figure_deplacement_pincement(
-        U_mod,
-        U_mod_amortie,
-        temps
-    )
+    figure_deplacement_pincement(U_mod, U_mod_amortie, temps)
 
     # Création du fichier audio
     signal = (
