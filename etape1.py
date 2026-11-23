@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import scipy as sp
 
 L = 0.33        # longueur vibrante [m]
-N_ELEM = 330    # nombre d'éléments : multiple de 11 -> h = 1 mm, archet sur le noeud 30
 MU = 3.1e-3     # masse linéique [kg/m]
 T = 51.9        # tension corde sol [N]
-X_ARCH = 0.03   # abscisse archet [m]  -> L/5 possible
+N_ELEM = 330    # nombre d'éléments : multiple de 11 -> h = 1 mm, archet sur le noeud 30
+X_ARCH = 0.03   # abscisse archet [m] -> L/11
 
 h = L / N_ELEM  # longueur d'un élément
 colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink', 'cyan', 'yellow', 'magenta', 'black', 'grey']
