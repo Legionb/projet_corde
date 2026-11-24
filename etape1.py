@@ -1,7 +1,6 @@
 import numpy as np
 from string_fem import *
 import matplotlib.pyplot as plt
-import scipy as sp
 
 L = 0.33        # longueur vibrante [m]
 MU = 3.1e-3     # masse linéique [kg/m]
@@ -38,8 +37,8 @@ if __name__ == "__main__" :
     U_exact = [ (1/(T*L)) * xi * (L - X_ARCH) if xi <= X_ARCH else (1/(T*L)) * X_ARCH * (L - xi) for xi in x]
     print("erreur max statique :", max(abs(U[i] - U_exact[i]) for i in range(N_ELEM+1)), "m")
 
-    U_mm = [u * 1e3 for u in U]
-    U_exact_mm = [u * 1e3 for u in U_exact]
+    U_mm = U * 1e3
+    U_exact_mm = U_exact * 1e3
     plt.figure()
     plt.plot(x, U_mm, label="EF")
     plt.xlabel("x (m)")
@@ -49,8 +48,7 @@ if __name__ == "__main__" :
     plt.savefig("figures/fig1_statique.png")
 
     ## Fréquences propres
-
-    l, v_red = sp.linalg.eigh(K_red, M_red)
+    l, v_red = scipy.linalg.eigh(K_red, M_red)
     omegas = np.sqrt(l)
     frequences = omegas / (2*np.pi)
 
@@ -74,11 +72,9 @@ if __name__ == "__main__" :
     plt.savefig("figures/fig2_modes.png")
 
     ### Pré tension / fréquence
-
     tensions = np.linspace(0.25*T, 2*T, 50)
-    # K est proportionnelle à T : on multiplie par t/T, on ne ré-assemble pas
-    # (on ne calcule que les 5 premiers modes avec subset_by_index)
-    tab_l = [sp.linalg.eigh((t/T) * K_red, M_red)[0][:5] for t in tensions]
+    # K est proportionnelle à T : on multiplie par t/T, sans réassembler
+    tab_l = [scipy.linalg.eigh((t/T) * K_red, M_red)[0][:5] for t in tensions]
 
     plt.figure()
     for i in range(5) :
