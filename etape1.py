@@ -1,6 +1,7 @@
 import numpy as np
 from string_fem import *
 import matplotlib.pyplot as plt
+import scipy
 
 L = 0.33        # longueur vibrante [m]
 MU = 3.1e-3     # masse linéique [kg/m]
@@ -37,8 +38,8 @@ if __name__ == "__main__" :
     U_exact = [ (1/(T*L)) * xi * (L - X_ARCH) if xi <= X_ARCH else (1/(T*L)) * X_ARCH * (L - xi) for xi in x]
     print("erreur max statique :", max(abs(U[i] - U_exact[i]) for i in range(N_ELEM+1)), "m")
 
-    U_mm = U * 1e3
-    U_exact_mm = U_exact * 1e3
+    U_mm = [u * 1e3 for u in U]
+    U_exact_mm = [u * 1e3 for u in U_exact]
     plt.figure()
     plt.plot(x, U_mm, label="EF")
     plt.xlabel("x (m)")
